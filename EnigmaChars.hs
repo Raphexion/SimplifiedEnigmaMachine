@@ -1,6 +1,6 @@
 -- | The simplified enigma machine only handles a subset of all chars
 
-module EnigmaChars (EnigmaChar, modEnigmaChar, charToEnigmaChar, enigmaCharToChar) where
+module EnigmaChars (EnigmaChar, valToEnigmaBase, modEnigmaChar, charToEnigmaChar, enigmaCharToChar) where
 
 import qualified Data.Map as Map (Map, lookup, fromList)
 import Data.Char (isLower)
@@ -32,6 +32,22 @@ modEnigma = (flip mod) nbOfEnigmaChars
 modEnigmaChar :: Int -> EnigmaChar
 modEnigmaChar = toEnum . modEnigma
 
+-- | It is very useful to create a new base instead of 10.
+-- | Our EnigmaBase will be equal to nbOfEnigmaChars
+
+valToEnigmaBase' :: Int -> [Int]
+valToEnigmaBase' 0 = [ 0 ]
+valToEnigmaBase' n
+  | n < nbOfEnigmaChars = [ n ]
+  | otherwise           = div n nbOfEnigmaChars : valToEnigmaBase' (rem n nbOfEnigmaChars)
+
+valToEnigmaBase :: Int -> Int -> [Int]
+valToEnigmaBase width n'
+  | s == width = l
+  | s < width = (replicate (width - s) 0) ++ l
+  where n = mod n' (width * nbOfEnigmaChars)
+        l = valToEnigmaBase' n
+        s = length l
 
 -- | Even if we could autogenerate a translation list,
 -- | we write it up explicitly for readability
