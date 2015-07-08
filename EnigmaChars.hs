@@ -26,8 +26,12 @@ data EnigmaChar = A | B | C | D | E |
 nbOfEnigmaChars :: Int
 nbOfEnigmaChars = (+1) $ fromEnum (maxBound :: EnigmaChar)
 
+modEnigma :: Int -> Int
+modEnigma = (flip mod) nbOfEnigmaChars
+
 modEnigmaChar :: Int -> EnigmaChar
-modEnigmaChar = toEnum . (flip mod) nbOfEnigmaChars
+modEnigmaChar = toEnum . modEnigma
+
 
 -- | Even if we could autogenerate a translation list,
 -- | we write it up explicitly for readability
