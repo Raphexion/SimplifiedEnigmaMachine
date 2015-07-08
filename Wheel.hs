@@ -13,4 +13,4 @@ type Wheel         = M.Map EnigmaChar EnigmaChar
 -- | Allow rotate of enigma characters
 
 safeRotate :: Int -> EnigmaChar -> EnigmaChar
-safeRotate ticks = modEnigma . (+ticks) . fromEnum
+safeRotate ticks = modEnigmaChar . (+ticks) . fromEnum
