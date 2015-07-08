@@ -1,6 +1,6 @@
 -- | The simplified enigma machine only handles a subset of all chars
 
-module EnigmaChars (EnigmaChar, charToEnigmaChar, enigmaCharToChar) where
+module EnigmaChars (EnigmaChar, modEnigma, charToEnigmaChar, enigmaCharToChar) where
 
 import qualified Data.Map as Map (Map, lookup, fromList)
 import Data.Char (isLower)
@@ -18,6 +18,16 @@ data EnigmaChar = A | B | C | D | E |
                   ONE | TWO | THREE | FOUR | FIVE |
                   SIX | SEVEN | EIGHT | NINE | ZERO
                 deriving (Show, Eq, Enum, Ord, Bounded)
+
+-- | It is very useful to be able to translate a number
+-- | into a enigma character. Moreover, it is very helpful
+-- | to have a function that does this with "modulues"
+
+nbOfEnigmaChars :: Int
+nbOfEnigmaChars = (+1) $ fromEnum (maxBound :: EnigmaChar)
+
+modEnigma :: Int -> EnigmaChar
+modEnigma = toEnum . (flip mod) nbOfEnigmaChars
 
 -- | Even if we could autogenerate a translation list,
 -- | we write it up explicitly for readability
