@@ -1,15 +1,12 @@
-module EnigmaChar where
+-- | The simplified enigma machine only handles a subset of all chars
+
+module EnigmaChars (EnigmaChar, charToEnigmaChar, enigmaCharToChar) where
 
 import qualified Data.Map as Map (Map, lookup, fromList)
 import Data.Char (isLower)
 import Data.Tuple (swap)
 
-{-
-
-Possible usage:
-Just 'a' >>= charToEnigmaChar >>= enigmaCharToChar
-
--}
+-- | The internal characters
 
 data EnigmaChar = A | B | C | D | E |
                   F | G | H | I | J |
@@ -21,6 +18,9 @@ data EnigmaChar = A | B | C | D | E |
                   ONE | TWO | THREE | FOUR | FIVE |
                   SIX | SEVEN | EIGHT | NINE | ZERO
                 deriving (Show, Eq, Enum, Ord, Bounded)
+
+-- | Even if we could autogenerate a translation list,
+-- | we write it up explicitly for readability
 
 translation = [ ('a', A), ('A', A)
               , ('b', B), ('B', B)
@@ -63,14 +63,23 @@ translation = [ ('a', A), ('A', A)
               , ('5', FIVE), ('6', SIX), ('7', SEVEN), ('8', EIGHT), ('9', NINE)
               ]
 
+-- | Hashmaps thats maps to/from char and enigma chars
+
 mapCharToEnigmaChar :: Map.Map Char EnigmaChar
 mapCharToEnigmaChar = Map.fromList translation
 
-charToEnigmaChar :: Char -> Maybe EnigmaChar
-charToEnigmaChar c = Map.lookup c mapCharToEnigmaChar
-
 mapEnigmaCharToChar :: Map.Map EnigmaChar Char
 mapEnigmaCharToChar = Map.fromList $ map swap $ filter (not . isLower . fst) translation
+
+-- | Functions to convert characters to/from char and enigma chars
+-- | Please note that this is not isomorphic. We will never convert back
+-- | to lower letters. E.g,
+-- |   Char 'a' -> Enigma Char A -> Char 'A'
+-- | whereas
+-- |   Char 'A' -> Enigma Char A -> Char 'A'
+
+charToEnigmaChar :: Char -> Maybe EnigmaChar
+charToEnigmaChar c = Map.lookup c mapCharToEnigmaChar
 
 enigmaCharToChar :: EnigmaChar -> Maybe Char
 enigmaCharToChar ec = Map.lookup ec mapEnigmaCharToChar
