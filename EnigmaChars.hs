@@ -1,6 +1,6 @@
 -- | The simplified enigma machine only handles a subset of all chars
 
-module EnigmaChars (EnigmaChar, valToEnigmaBase, modEnigmaChar, charToEnigmaChar, enigmaCharToChar) where
+module EnigmaChars where
 
 import qualified Data.Map as Map (Map, lookup, fromList)
 import Data.Char (isLower)
